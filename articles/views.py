@@ -10,6 +10,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 
+
 def home(request):
     articles = Article.objects.all().order_by('-pk')
     # print(articles)
@@ -50,6 +51,7 @@ def search(request):
     else:
         return render(request, 'search.html', {})
 
+
 def article_detail(request, pk):
     article = Article.objects.get(pk=pk)
     content = article.content
@@ -58,6 +60,7 @@ def article_detail(request, pk):
         'content': content
     }
     return render(request, 'article_detail.html', context)
+
 
 @login_required
 def create_article(request):
@@ -106,6 +109,7 @@ def user_register(request):
             }
         return render(request, 'users/register.html', context)
 
+
 def user_login(request):
     # user = request.user
     if request.method == 'POST':
@@ -120,6 +124,7 @@ def user_login(request):
             login(request, user)
             return redirect('articles:home')
     return render(request, 'users/login.html', {})
+
 
 def user_logout(request):
     if request.method == "POST":
