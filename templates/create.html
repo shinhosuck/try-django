@@ -1,0 +1,41 @@
+{% extends 'index.html' %}
+
+<title>
+    {% block title %}
+        New Article
+    {% endblock title %}
+</title>
+
+{% block content %}
+   
+    {% comment %}
+    <div>
+        <h1>New Article</h1>
+        <form action="{% url 'articles:create-article' %}" method="POST">
+            {% csrf_token %}
+            <div>
+                <input type="text" name="title" placeholder="Tile">
+            </div>
+            <div>
+                <textarea name="content" placeholder="Content"></textarea>
+            </div>
+            <div>
+                <input type="submit" value="Create article">
+            </div>
+        </form>
+    </div>
+    {% endcomment %}
+    <div>
+        {% if new_article %}
+            <p style="color: blue">Article successfully created!</p>
+            <a href="{% url 'articles:article-detail' new_article.pk %}" class="retrieve-data">{{ new_article }}</a>
+            <p>{{ new_article.content }}</p>
+        {% else %}
+            <form action="" method="POST">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit">Create article</button>
+            </form>
+        {% endif %}
+    </div>
+{% endblock content %}

@@ -1,0 +1,16 @@
+{% extends 'index.html' %}
+
+
+<title>
+    {% block title %}
+        Article Detail
+    {% endblock title %}
+</title>
+
+
+{% block content %}
+    <h1>{{ article }}</h1>
+    <div>
+        <p>{{ content }}</p>
+    </div>
+{% endblock content %}

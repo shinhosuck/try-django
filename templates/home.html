@@ -1,0 +1,22 @@
+{% extends 'index.html' %}
+
+
+<title>
+    {% block title %}
+        TryDjango
+    {% endblock title %}
+</title>
+
+
+{% block content %}
+    <h1 style="margin: 1.5rem 0">Articles</h1>
+    <div style="display: grid; grid-template-columns: auto auto auto; grid-gap: 0.5rem;">
+        {% for article in articles %}
+        <div style="background: rgb(160, 255, 160); padding: 1rem;">
+            <h3>{{ article.title }}</h3>
+            <p style="margin-top: 1rem">{{ article.content }}</p>
+            <p style="margin-top: 0.5rem">Author: {{ request.user }}</p>
+        </div>
+        {% endfor %}
+    </div>
+{% endblock content %}

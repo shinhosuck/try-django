@@ -1,0 +1,25 @@
+{% extends 'index.html' %}
+
+<title>
+    {% block title %}
+        Logout
+    {% endblock title %}
+</title>
+
+{% block content %}
+    {% if request.user.is_authenticated %}
+    <div>
+        <h1>Logout</h1>
+        <p>Are you sure you want to logout?</p>
+        <form action="{% url 'articles:user-logout' %}" method="POST">
+            {% csrf_token %}
+            <div style="margin-top: 1rem">
+                <input type="submit" value="Logout">
+            </div>
+        </form>
+    </div>
+    {% else %}
+        <p>You are logged out. Would you like to login?</p>
+        <a href="{% url 'articles:user-login' %}">Login</a>
+    {% endif %}
+{% endblock content %}
