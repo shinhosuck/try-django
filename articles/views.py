@@ -3,16 +3,23 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.template.loader import render_to_string
 
 # from articles.admin import ArticleAdmin
-from articles.models import Article
 from articles.forms import ArticleForm
-
+from articles.models import Article
+from django.utils.text import slugify
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 
 
 def home(request):
-    articles = Article.objects.all()
+    articles = Article.objects.all().order_by('-date_created')
+    # article = get_object_or_404(Article, title='new article title 1')
+    # article.title = 'edited article title '
+    # article.save()
+    # article.slug = article.title
+    # article.save()
+    # print('title:', article.title)
+    # print('slug:', article.slug)
     # article = get_object_or_404(Article, pk=1)
     # article.title = 'updated title'
     # article.save()
