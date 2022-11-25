@@ -1,8 +1,8 @@
 from django.http import HttpResponse
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.template.loader import render_to_string
 
-from articles.admin import ArticleAdmin
+# from articles.admin import ArticleAdmin
 from articles.models import Article
 from articles.forms import ArticleForm
 
@@ -12,8 +12,10 @@ from django.contrib.auth.decorators import login_required
 
 
 def home(request):
-    articles = Article.objects.all().order_by('-pk')
-    # print(articles)
+    articles = Article.objects.all()
+    # article = get_object_or_404(Article, pk=1)
+    # article.title = 'updated title'
+    # article.save()
     context = {
         'articles': articles
     }
