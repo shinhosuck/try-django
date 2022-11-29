@@ -75,10 +75,10 @@ def article_detail(request, pk):
 def create_article(request):
     if request.method == 'POST':
         form = ArticleForm(request.POST or None)
+        form.instance.author = request.user
         if form.is_valid():
             # ---WHEN USING form.ModelForm ALL YOU NEED TO DO IS save()
             new_article = form.save()
-
             #---- IF USING form.Form USE THIS-------
             # title = request.POST.get('title')
             # content = request.POST.get('content')

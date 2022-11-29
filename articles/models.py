@@ -4,7 +4,7 @@ from django.utils import timezone
 from django.utils.text import slugify
 
 class Article(models.Model):
-    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    author = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
     title = models.CharField(max_length=50)
     slug = models.SlugField(null=True, blank=True)
     content = models.TextField()
