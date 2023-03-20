@@ -1,0 +1,21 @@
+{% extends 'index.html' %}
+
+
+{% block title %}
+    Home
+{% endblock title %}
+
+{% block content %}
+<Section class="main-section">
+    <h2>Latest Articles</h2>
+    <div class="contents">
+        {% for article in articles %}
+            <a class="content" href="article/{{ article.id }}">
+                <p>Article: {{ article.id }}</p>
+                <h3>{{ article.title }}</h3>
+                <p>{{ article.content }}</p>
+            </a>
+        {% endfor %}
+    </div>
+</Section>
+{% endblock content %}
