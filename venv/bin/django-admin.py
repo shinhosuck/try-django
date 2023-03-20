@@ -1,4 +1,4 @@
-#!/home/shinhosuck1973/dev_exercises/Try-Django/venv/bin/python3
+#!/home/anderson/Documents/try-django-full-tutorial/venv/bin/python3
 # When the django-admin.py deprecation ends, remove this script.
 import warnings
 
