@@ -16,6 +16,7 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            font-family: system-ui, sans-serif;
         }
         .form-container {
             width: 90%;
@@ -63,10 +64,16 @@
             <ul class="nav-items">
                 <li><a href="/">Home</a></li>
                 <li><a href="">Articles</a></li>
-                <li><a href="">Login</a></li>
+                <li><a href="/new/article">Create</a></li>
+                <li><a href="{% url 'users:login' %}">Login</a></li>
                 <li><a href="">Register</a></li>
             </ul>
         </nav>
+        {% if messages %}
+            {% for message in messages %}
+                <h4>{{ message }}</h4>
+            {% endfor %}
+        {% endif %}
         <div class="form-container">
             <form action="/search" method="GET">
                 <input type="text" name="q" placeholder="Search">

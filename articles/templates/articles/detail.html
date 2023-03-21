@@ -1,0 +1,21 @@
+{% extends "articles/index.html" %}
+
+{% block title %}
+    Article Detail
+{% endblock title %}
+
+
+
+{% block content %}
+<Section class="main-section">
+    <h2>Article Detail</h2>
+    <div class="contents">
+        <div class="content">
+            <p>Article: {{ article.id }}</p>
+            <h3>{{ article.title }}</h3>
+            <p>{{ article.content }}</p>
+        </div>
+    </div>
+    <a href="{% url 'articles:home' %}">Home</a>
+</Section>
+{% endblock content %}

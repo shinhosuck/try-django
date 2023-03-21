@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width={device-width}, initial-scale=1.0">
+    <title>
+        {% block title %}
+        {% endblock title %}
+    </title>
+
+    <style>
+        ::before,
+        ::after,
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: system-ui, sans-serif;
+        }
+        .form-container {
+            width: 90%;
+            margin: 3rem auto 0 auto;
+        }
+        .form-container > form > input {
+            padding: 0.5rem;
+        }
+        .nav-bar {
+            width: 90%;
+            margin: 0 auto;
+        }
+        .nav-items {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+        }
+        .nav-items > li {
+            list-style-type: none;
+        }
+        .nav-items > li > a {
+            display: inline-block;
+            padding: 1rem 0;
+            text-decoration: none;
+        }
+        .main-section {
+            width: 90%;
+            margin: 2rem auto 0 auto;
+        }
+        .contents {
+            display: flex;
+            /* align-items: flex-start; */
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+        .content {
+            border: 1px solid lightgray;
+            padding: 1rem;
+        }
+        .error {
+            color: red;
+        }
+        .success {
+            color: blue
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="nav-bar">
+            <ul class="nav-items">
+                <li><a href="{% url 'articles:home' %}">Home</a></li>
+                <li><a href="">Articles</a></li>
+                <li><a href="{% url 'articles:article-new' %}">Create</a></li>
+                <li><a href="{% url 'users:login' %}">Login</a></li>
+                <li><a href="">Register</a></li>
+            </ul>
+        </nav>
+        <div class="form-container">
+            <form action="{% url 'articles:article-search' %}" method="GET">
+                <input type="text" name="q" placeholder="Search">
+                <input type="submit">
+            </form>
+        </div>
+    </header>
+    <main>
+        {% comment %}
+            {% if messages %}
+            <ul class="messages">
+                {% for message in messages %}
+                <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+        {% endcomment %}
+
+        {% block content %}
+        {% endblock content %}
+    </main>
+</body>
+</html>

@@ -1,1 +1,22 @@
-next video: 23
+next video: 24
+review video: 23
+
+from django.shortcuts import render
+from django.template.loader import render_to_string, get_template
+from django.http import HttpResponse
+from articles.models import Article
+
+
+def home(request):
+    query_list = Article.objects.all()
+    context = {
+        "query_list": query_list
+    }
+
+    THIS IS RARELY USED
+    ===================
+    html = get_template("articles/home.html")
+    str_data = html.render(context)
+
+    str_data = render_to_string("articles/home.html", context=context)
+    return HttpResponse(str_data)

@@ -1,0 +1,23 @@
+{% extends "articles/index.html" %}
+
+{% block title %}
+    Search Result
+{% endblock title %}
+
+
+
+{% block content %}
+<Section class="main-section">
+    <h2>Search Result</h2>
+    <div class="contents">
+        {% for a in article %}
+        <div class="content">
+            <p>Article: {{ a.id }}</p>
+            <h3>{{ a.title }}</h3>
+            <p>{{ a.content }}</p>
+        </div>
+        {% endfor %}
+    </div>
+    <a href="{% url 'articles:home' %}">Home</a>
+</Section>
+{% endblock content %}
