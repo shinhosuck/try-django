@@ -1,4 +1,4 @@
-next video: 24
+next video: 24, 27
 review video: 23
 
 from django.shortcuts import render

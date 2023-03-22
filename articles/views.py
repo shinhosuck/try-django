@@ -4,7 +4,7 @@ from django.template.loader import render_to_string, get_template
 from articles.models import Article
 from articles.forms import CreateArticleForm
 from django.contrib import messages
-
+from django.contrib.auth.decorators import login_required
 
 def home(request):
     articles = Article.objects.all()
@@ -23,8 +23,9 @@ def home(request):
     template = get_template("home.html")
     html = template.render(context)
     '''
-    html = render_to_string("articles/home.html", context)
-    return HttpResponse(html)
+    # html = render_to_string("articles/home.html", context)
+    # return HttpResponse(html)
+    return render(request, "articles/home.html", context=context)
 
 
 def detail(request, id=None):
@@ -34,11 +35,10 @@ def detail(request, id=None):
     context = {
         "article": article
     }
-    data = render_to_string("articles/detail.html", context=context)
-    return HttpResponse(data)
+    # data = render_to_string("articles/detail.html", context=context)
+    # return HttpResponse(data)
+    return render(request, "articles/detail.html", context=context)
 
-def contact_view(request):
-    return render(request, "articles/contact.html", context=None)
 
 def search_view(request):
     # print(request)
@@ -53,26 +53,53 @@ def search_view(request):
     }
     return render(request, "articles/search.html", context)
 
-
-def new_article_view(request):
+@login_required
+def create_article_view(request):
+    form = CreateArticleForm()
+    context= {
+        "form": form
+    }
     if request.method == "POST":
-        if request.user.is_authenticated:
-            author = request.user
-            # redirect_url = request.POST.get("next")
-            form = CreateArticleForm(request.POST, None)
-            if form.is_valid():
-                article = form.save()
-                article.author = author
-                article.save()
-                messages.success(request, "Article has been successfully created.")
-                # return redirect(f"/article/{new_article.id}")
-                return render(request, "articles/detail.html", context={"article": article})
-            else:
-                messages.warning(request, "Try again! There was an error during submission.")
-                return redirect("articles:article-new")
-        messages.warning(request, "You are not logged in!")
-        return render(request, "articles/article_form.html", context=None)
-    return render(request, "articles/article_form.html", context=None)
+        form = CreateArticleForm(request.POST)
+        print(form.instance.title)
+        author = request.user
+        context["form"] = form
+        if form.is_valid():
+            article = form.save()
+            article.author = author
+            article.save()
+            print(article.content)
+            context = {
+                "article": article
+            }
+            return render(request, "articles/detail.html",  context)
+    return render(request, "articles/create.html", context)
+    # if not request.user.is_authenticated:
+    #     messages.warning(request, "You are not logged in!")
+    #     return render(request, "users/login.html", context=None)
+    # form = CreateArticleForm(request.POST, None)
+    # if form.is_valid():
+        # this can be called after .is_valid()#
+        # cleaned = form.cleaned_data.get("title")
+        # cleaned = form.cleaned_data.get("content")
+        # print(cleaned)
+    # if request.method == "POST":
+    #     if request.user.is_authenticated:
+    #         author = request.user
+    #         # redirect_url = request.POST.get("next")
+    #         form = CreateArticleForm(request.POST)
+    #         if form.is_valid():
+    #             article = form.save(commit=False)
+    #             article.author = author
+    #             # article.save()
+    #             messages.success(request, "Article has been successfully created.")
+    #             return render(request, "articles/detail.html", context={"article": article})
+    #         else:
+    #             messages.warning(request, "Try again! There was an error during submission.")
+    #             return redirect("articles:article-new")
+    #     messages.warning(request, "You are not logged in!")
+    #     return render(request, "users/login.html", context=None)
+    # return render(request, "articles/article_form.html", context=None)
 
 
 """
@@ -88,3 +115,22 @@ THIS IS A LONG WAY WITHOUT USING BUILT IN FORM
 #                             title=title, content=content)
 #             context["article"] = article
 #     return render(request, "articles/article_form.html", context=context)
+
+
+def edit_article_view(request, id):
+    article = Article.objects.get(id=id)
+    print(article.pk)
+    form = CreateArticleForm(instance=article)
+    context = {
+        "form": form
+    }
+    if request.method == "POST":
+        form = CreateArticleForm(request.POST, instance=article)
+        context["form"] = form
+        if form.is_valid():
+            article = form.save()
+            context = {
+                "article": article
+            }
+            return render(request, "articles/detail.html", context)
+    return render(request, "articles/create.html", context)

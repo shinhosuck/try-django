@@ -22,13 +22,6 @@
     .article-form-container > h2 {
         padding: 1rem;
     }
-    /* .article-form-container > h4 {
-        padding: 0 1rem;
-        color: orangered;
-        letter-spacing: 0.05rem;
-        font-size: 1rem;
-        font-weight: 400;
-    } */
     .article-form {
         display: flex;
         flex-direction: column;
@@ -37,7 +30,9 @@
         border-radius: 10px;
     }
     .article-form > input,
-    .article-form > textarea {
+    .article-form > textarea,
+    .article-form > textarea{
+        width: 100% !important;
         border: 1px solid lightgray;
         letter-spacing: 0.05rem;
         padding: 1rem;
@@ -61,19 +56,27 @@
         font-family: system-ui, sans-serif;
     }
 </style>
-
-
 <div class="article-form-container">
     {% if not article %}
     <h2>Article Form</h2>
-    <form class="article-form" action="{% url 'articles:article-new' %}" method="POST">
+    {% comment %}
+    <!-- <form class="article-form" action="{% url 'articles:article-new' %}" method="POST">
         {% csrf_token %}
         <input type="hidden" value="/" name="next">
         <input type="text" name="title" placeholder="Title">
         <textarea name="content" id="" cols="30" rows="10" placeholder="Content"></textarea>
         <div class="form-button">
             <input type="submit" value="Create article">
-            <a href="/">Cancel</a>
+            <a href="{% url 'articles:home' %}">Cancel</a>
+        </div>
+    </form> -->
+    {% endcomment %}
+    <form class="article-form" action="" method="POST">
+        {% csrf_token %}
+        {{ form }}
+        <div class="form-button">
+            <input type="submit" value="Create article">
+            <a href="{% url 'articles:home' %}">Cancel</a>
         </div>
     </form>
     {% else %}

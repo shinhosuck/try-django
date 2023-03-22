@@ -70,10 +70,14 @@
         <nav class="nav-bar">
             <ul class="nav-items">
                 <li><a href="{% url 'articles:home' %}">Home</a></li>
-                <li><a href="">Articles</a></li>
-                <li><a href="{% url 'articles:article-new' %}">Create</a></li>
-                <li><a href="{% url 'users:login' %}">Login</a></li>
-                <li><a href="">Register</a></li>
+                <li><a href="#">Articles</a></li>
+                {% if request.user.is_authenticated %}
+                    <li><a href="{% url 'articles:article-create' %}">Create</a></li>
+                    <li><a href="{% url 'users:logout' %}">Logout</a></li>
+                {% else %}
+                    <li><a href="{% url 'users:login' %}">Login</a></li>
+                    <li><a href="#">Register</a></li>
+                {% endif %}
             </ul>
         </nav>
         <div class="form-container">
@@ -82,18 +86,13 @@
                 <input type="submit">
             </form>
         </div>
+        {% if messages %}
+            {% for message in messages%}
+                <h4 {% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</h4>
+            {% endfor %}
+        {% endif %}
     </header>
     <main>
-        {% comment %}
-            {% if messages %}
-            <ul class="messages">
-                {% for message in messages %}
-                <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-                {% endfor %}
-            </ul>
-            {% endif %}
-        {% endcomment %}
-
         {% block content %}
         {% endblock content %}
     </main>
