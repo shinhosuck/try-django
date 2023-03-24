@@ -1,0 +1,96 @@
+{% extends "articles/index.html" %}
+
+{% block title %}
+    Register
+{% endblock title %}
+
+
+
+{% block content %}
+
+<style>
+    .register-form-container  {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 90%;
+        max-width: 500px;
+        padding: 1rem;
+        display: flex;
+        flex-direction: column;
+        gap: 1.2rem;
+        border-radius: 10px;
+        border: 1px solid lightgray;
+
+    }
+    .register-form {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+    }
+    .register-form > input {
+        border: 1px solid lightgray;
+        padding: 1rem;
+        border-radius: 10px;
+    }
+    .register-form > input:active,
+    .register-form > input:focus {
+        outline: 2px solid rgb(96, 193, 223) !important;
+        border: none;
+    }
+
+    .register-form > label,
+    .register-form > input {
+        letter-spacing: 0.05rem;
+    }
+
+    .register-form > br {
+        display: none;
+    }
+    .register-form > span {
+        color: gray;
+        font-size: 0.9rem;
+        letter-spacing: 0.05rem;
+        line-height: 1.2;
+    }
+    .register-form > span > ul {
+        padding: 0 0 0 1rem;
+    }
+    .register-form > span > ul > li {
+        list-style-type: initial;
+
+    }
+    .register-form-buttons {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        gap: 0.5rem;
+    }
+    .register-form-buttons > * {
+        border: 1px solid lightgray;
+        background: none;
+        border-radius: 25px;
+        padding: 0.6rem 1rem;
+        letter-spacing: 0.05rem;
+        font-size: 1rem;
+        text-decoration: none;
+        color: black;
+    }
+    .errorlist {
+        color: orangered;
+    }
+</style>
+<div class="register-form-container">
+    <h2>Registration Form</h2>
+    <form class="register-form" action="" method="POST">
+        {% csrf_token %}
+        {{ form }}
+        <div class="register-form-buttons">
+            <button type="submit">Register</button>
+            <a href="{% url 'articles:home' %}">Cancel</a>
+        </div>
+    </form>
+</div>
+
+{% endblock content %}

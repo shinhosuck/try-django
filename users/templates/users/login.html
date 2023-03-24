@@ -1,4 +1,3 @@
-
 {% extends "articles/index.html" %}
 
 {% block title %}
@@ -101,11 +100,12 @@
         <h2>Login Form</h2>
         <form class="login-form" action="{% url 'users:login' %}" method="POST">
             {% csrf_token %}
-            <input type="hidden" value="{% url 'articles:home' %}" name="next">
+            <!-- <input type="hidden" value="{% url 'articles:home' %}" name="next">
             <label for="username">Username</label>
             <input type="text" id="username" name="username">
             <label for="password">Password</label>
-            <input type="password" id="password" name="password">
+            <input type="password" id="password" name="password"> -->
+            {{ form }}
             <div class="login-form-buttons">
                 <button type="submit">Login</button>
                 <a href="{% url 'articles:home' %}">Cancel</a>

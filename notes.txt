@@ -1,5 +1,7 @@
-next video: 24, 27
-review video: 23
+next video: 30
+
+FORM VALIDATION:
+video: 27
 
 from django.shortcuts import render
 from django.template.loader import render_to_string, get_template

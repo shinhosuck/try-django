@@ -61,14 +61,16 @@ def create_article_view(request):
     }
     if request.method == "POST":
         form = CreateArticleForm(request.POST)
-        print(form.instance.title)
+        print(dir(form))
         author = request.user
         context["form"] = form
         if form.is_valid():
-            article = form.save()
-            article.author = author
-            article.save()
-            print(article.content)
+            # when using built in form, do not have to user "clean_data" built in method.
+            # title = form.cleaned_data.get("title")
+            # content = form.cleaned_data.get("content")
+            title = request.POST.get("title")
+            content = request.POST.get("content")
+            article = Article.objects.create(author=author, title=title, content=content)
             context = {
                 "article": article
             }
@@ -117,6 +119,7 @@ THIS IS A LONG WAY WITHOUT USING BUILT IN FORM
 #     return render(request, "articles/article_form.html", context=context)
 
 
+@login_required
 def edit_article_view(request, id):
     article = Article.objects.get(id=id)
     print(article.pk)
