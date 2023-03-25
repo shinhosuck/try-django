@@ -4,6 +4,8 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 
+
+
 '''
 messages.debug(request, '%s SQL statements were executed.' % count)
 messages.info(request, 'Three credits remain in your account.')
@@ -11,7 +13,6 @@ messages.success(request, 'Profile details updated.')
 messages.warning(request, 'Your account expires in three days.')
 messages.error(request, 'Document deleted.')
 '''
-
 
 def register_view(request):
     form = UserCreationForm()

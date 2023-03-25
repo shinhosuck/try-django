@@ -8,14 +8,10 @@ from django.contrib.auth.decorators import login_required
 
 def home(request):
     articles = Article.objects.all()
-    article = Article.objects.get(pk=1)
-    article_filter = Article.objects.filter(title="Title 2").first()
-    article.title = "Title 1"
-    article.save()
-    # print(article_filter)
     context={
         "articles": articles
     }
+
     '''
     ======================
     THIS IS RARELY USED!!!

@@ -1,7 +1,10 @@
-next video: 30
+next video: 40
 
 FORM VALIDATION:
 video: 27
+
+SECRET_KEY = 'django-insecure-!@q@kwz-+tr9=i#lra%19ji^6!e9_&gqoykxf1zvp_u0*q3x-c'
+
 
 from django.shortcuts import render
 from django.template.loader import render_to_string, get_template
@@ -22,3 +25,32 @@ def home(request):
 
     str_data = render_to_string("articles/home.html", context=context)
     return HttpResponse(str_data)
+
+
+.env:
+    -install django-dotenv using pip3
+    -create .env file in the root dir 
+    -in .env add:
+        DEBUG = True or False
+        SECRET_KEY = set it something else 
+        ALLOWED_HOSTS = the host that you will allowed when DEBUG = False.
+
+    -in manage.py import dotenv, add dotenv.read_dotenv()
+    -in settings import os 
+    -use os.environ.get()
+
+    Example:
+        DEBUG = str(os.environ.get("DEBUG")) == "True"
+
+        SECRET_KEY = os.environ.get("SECRET_KEY", 
+        'django-insecure-!@q@kwz-+tr9=i#lra%19ji^6!e9_&gqoykxf1zvp_u0*q3x-c')
+
+        ALLOWED_HOSTS = ["127.0.0.1", "192.168.181.37"]
+        if DEBUG == False:
+            ALLOWED_HOSTS +=  [os.environ.get("ALLOWED_HOSTS")]
+
+Django Search Filter:
+    __icontains=""
+    __contains=""
+    __iexact=""
+    __exact=""

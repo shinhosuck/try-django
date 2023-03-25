@@ -11,6 +11,12 @@
     <div class="contents">
         {% for article in articles %}
             <a class="content" href="{% url 'articles:article-detail' article.id%}">
+                <p>Date: {{ article.created|date:"M d, o" }}</p>
+                {% if article.created|date:"M d, o" == article.updated|date:"M d, o" %}
+                    <p>Updated: Not yet been update</p>
+                {% else%}
+                    <p>Updated: {{ article.updated|date:"M d, o" }}</p>
+                {% endif %}
                 <p>Article: {{ article.id }}</p>
                 <h3>{{ article.title }}</h3>
                 <p>{{ article.content }}</p>
