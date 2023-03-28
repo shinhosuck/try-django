@@ -8,14 +8,14 @@
 
 {% block content %}
 <Section class="main-section">
-    <h2>Search Result</h2>
+    <h2>Search Results</h2>
     <div class="contents">
         {% for a in article %}
-        <div class="content">
+        <a href="{{ a.get_absolute_url }}" class="content">
             <p>Article: {{ a.id }}</p>
             <h3>{{ a.title }}</h3>
-            <p>{{ a.content }}</p>
-        </div>
+            <!-- <p>{{ a.content }}</p> -->
+        </a>
         {% endfor %}
     </div>
     <a href="{% url 'articles:home' %}">Home</a>

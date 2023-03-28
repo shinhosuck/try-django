@@ -1,38 +1,33 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
 from django.template.loader import render_to_string, get_template
 from articles.models import Article
-from articles.forms import CreateArticleForm
+from articles.forms import CreateArticleForm, ArticleForm
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.http import Http404
+from django.db.models import Q
+
+
+
 
 def home(request):
     articles = Article.objects.all()
-    context={
-        "articles": articles
-    }
-
-    '''
-    ======================
-    THIS IS RARELY USED!!!
-    ======================
-    template = get_template("home.html")
-    html = template.render(context)
-    '''
-    # html = render_to_string("articles/home.html", context)
-    # return HttpResponse(html)
+    context={"articles": articles}
     return render(request, "articles/home.html", context=context)
 
 
-def detail(request, id=None):
-    article = None
-    if id:
-        article = Article.objects.get(id=id)
-    context = {
-        "article": article
-    }
-    # data = render_to_string("articles/detail.html", context=context)
-    # return HttpResponse(data)
+def detail(request, slug):
+    try:
+        article = Article.objects.get(slug=slug)
+        print(article.get_absolute_url())
+    except Exception as e:
+        error = e
+        messages.error(request, f"{error}")
+        return redirect("articles:home")
+    except Article.DoesNotExist:
+        raise Http404
+    context = {"article": article}
     return render(request, "articles/detail.html", context=context)
 
 
@@ -41,12 +36,9 @@ def search_view(request):
     # print(dir(request))
     # print(request.GET) this is dictionary
     query = request.GET.get("q")
+    title2 =  Article.objects.filter(Q(title__icontains=query) | Q(content__icontains=query))
     title = Article.objects.filter(title__icontains=query)
-    # content = Article.objects.filter(content__icontains=query)
-    # print(title)
-    context = {
-        "article": title
-    }
+    context = {"article": title}
     return render(request, "articles/search.html", context)
 
 @login_required
@@ -57,7 +49,6 @@ def create_article_view(request):
     }
     if request.method == "POST":
         form = CreateArticleForm(request.POST)
-        print(dir(form))
         author = request.user
         context["form"] = form
         if form.is_valid():
@@ -67,10 +58,8 @@ def create_article_view(request):
             title = request.POST.get("title")
             content = request.POST.get("content")
             article = Article.objects.create(author=author, title=title, content=content)
-            context = {
-                "article": article
-            }
-            return render(request, "articles/detail.html",  context)
+            # context = {"article": article}
+            return redirect("articles:article-detail",  article.slug)
     return render(request, "articles/create.html", context)
     # if not request.user.is_authenticated:
     #     messages.warning(request, "You are not logged in!")
@@ -114,17 +103,15 @@ THIS IS A LONG WAY WITHOUT USING BUILT IN FORM
 #             context["article"] = article
 #     return render(request, "articles/article_form.html", context=context)
 
-
 @login_required
-def edit_article_view(request, id):
-    article = Article.objects.get(id=id)
-    print(article.pk)
-    form = CreateArticleForm(instance=article)
+def edit_article_view(request, slug):
+    article = Article.objects.get(slug=slug)
+    form = ArticleForm(request.POST or None, instance=article)
     context = {
         "form": form
     }
     if request.method == "POST":
-        form = CreateArticleForm(request.POST, instance=article)
+        form = ArticleForm(request.POST, instance=article)
         context["form"] = form
         if form.is_valid():
             article = form.save()

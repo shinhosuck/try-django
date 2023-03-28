@@ -1,0 +1,28 @@
+{% extends 'articles/index.html' %}
+
+
+{% block title %}
+    Recipes
+{% endblock title %}
+
+{% block content %}
+<Section class="main-section">
+    <h2>Lates Recipes</h2>
+    <div class="contents">
+        {% for recipe in recipes %}
+            <a class="content" href="{% url 'recipes:detail' recipe.id %}">
+                <p>Date: {{ recipe.created|date:"M d, o" }}</p>
+                {% if recipe.created|date:"M d, o" == recipe.updated|date:"M d, o" %}
+                    <p>Updated: Not yet been update</p>
+                {% else%}
+                    <p>Updated: {{ recipe.updated|date:"M d, o" }}</p>
+                {% endif %}
+                <p>Recipe: {{ recipe.id }}</p>
+                <h3>{{ recipe.title }}</h3>
+                <p>{{ recipe.description }}</p>
+                <p>{{ recipe.direction }}</p>
+            </a>
+        {% endfor %}
+    </div>
+</Section>
+{% endblock content %}

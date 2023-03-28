@@ -1,10 +1,24 @@
-next video: 40
+next video: 59
 
 FORM VALIDATION:
 video: 27
 
+SIGNALS: VIDEO 40
+
+ADVANCE SEARCH: 47
+
+ADVANCE CONVERT WITH PINT: VIDEO 56 + 56, 57
+
 SECRET_KEY = 'django-insecure-!@q@kwz-+tr9=i#lra%19ji^6!e9_&gqoykxf1zvp_u0*q3x-c'
 
+Django Built in Error:
+'''
+messages.debug(request, '%s SQL statements were executed.' % count)
+messages.info(request, 'Three credits remain in your account.')
+messages.success(request, 'Profile details updated.')
+messages.warning(request, 'Your account expires in three days.')
+messages.error(request, 'Document deleted.')
+'''
 
 from django.shortcuts import render
 from django.template.loader import render_to_string, get_template
@@ -54,3 +68,55 @@ Django Search Filter:
     __contains=""
     __iexact=""
     __exact=""
+
+Django Error Handling:
+from django.http import Http404
+
+    try:
+        do something here 
+    except MyClass.DoesNotExist:
+        raise Http404 or
+        send a message to an url:
+            messages.error(request, "Page not found")
+            return redirect("articles:page-404")
+
+    try:
+        do something here 
+    except Exception as e:
+        raise Http404
+
+
+Get Absolute URL:
+    class Article(models.Model):
+        author = models.ForeignKey(User, on_delete=models.CASCADE)
+        title = models.CharField(max_length=120)
+        content = models.TextField()
+
+        class Meta:
+            ordering = ["-id"]
+        
+        def __str__(self):
+            title = self.title
+            return title 
+
+        def get_absolute_url(self):
+            url = f"/article/{self.slug}" or
+            url = reverse("article-detail", kwargs={"slug": self.slug})
+            return url
+    -In html:
+         <a href="{{ a.get_absolute_url }}" class="content">
+
+ForeignKey:
+    from django.contrib.auth.models import User
+    from articles.models import Article
+
+    usernames = Article.objects.filter(author__usernmae="jack")
+    for username in usernames:
+        print(username)
+
+
+CRUD:
+c = create
+r = retrieve
+u = update 
+d = delete

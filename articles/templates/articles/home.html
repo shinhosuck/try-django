@@ -10,7 +10,7 @@
     <h2>Latest Articles</h2>
     <div class="contents">
         {% for article in articles %}
-            <a class="content" href="{% url 'articles:article-detail' article.id%}">
+            <a class="content" href="{% url 'articles:article-detail' article.slug %}">
                 <p>Date: {{ article.created|date:"M d, o" }}</p>
                 {% if article.created|date:"M d, o" == article.updated|date:"M d, o" %}
                     <p>Updated: Not yet been update</p>

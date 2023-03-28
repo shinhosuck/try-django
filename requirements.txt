@@ -7,3 +7,4 @@ django-dotenv
 # for production 
 gunicorn
 psycopg2-binary
+pint

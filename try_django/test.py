@@ -1,6 +1,7 @@
 from django.contrib.auth.password_validation import validate_password
 from django.conf import settings
 from django.test import TestCase
+from articles.models import Article
 import os
 
 
