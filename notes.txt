@@ -7,7 +7,19 @@ SIGNALS: VIDEO 40
 
 ADVANCE SEARCH: 47
 
-ADVANCE CONVERT WITH PINT: VIDEO 56 + 56, 57
+ADVANCE CONVERT UNIT MEASURE WITH PINT: VIDEO 56 + 56, 57
+
+MODEL FORM SET FACTORY: VIDEO 61
+-for querying more than one instance
+
+CUSTOMIZING FORM FIELDS : VIDEO 62-63
+-adding widgets
+-for looping forms:
+    for field in form:
+        <div {% if field.field.required %} required-class {% endfor %}>
+          {{ field.label_tag }}{{ field }} 
+         </div>
+-changing field names and etc.
 
 SECRET_KEY = 'django-insecure-!@q@kwz-+tr9=i#lra%19ji^6!e9_&gqoykxf1zvp_u0*q3x-c'
 
@@ -41,7 +53,7 @@ def home(request):
     return HttpResponse(str_data)
 
 
-.env:
+.env file:
     -install django-dotenv using pip3
     -create .env file in the root dir 
     -in .env add:
@@ -106,7 +118,7 @@ Get Absolute URL:
     -In html:
          <a href="{{ a.get_absolute_url }}" class="content">
 
-ForeignKey:
+ForeignKey with double underscore:
     from django.contrib.auth.models import User
     from articles.models import Article
 
@@ -120,3 +132,11 @@ c = create
 r = retrieve
 u = update 
 d = delete
+
+
+MODEL FORM SET FACTORY:
+
+Form = modelformset_factory(model, form=form, extra=0)
+
+FROM EDITING:
+

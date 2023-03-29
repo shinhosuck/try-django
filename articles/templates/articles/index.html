@@ -73,6 +73,8 @@
             <ul class="nav-items">
                 <li><a href="{% url 'articles:home' %}">Home</a></li>
                 <li><a href="#">Articles</a></li>
+                <li><a href="{% url 'recipes:list' %}">Recipes</a></li>
+                <li><a href="{% url 'recipes:create' %}">Create recipe</a></li>
                 {% if request.user.is_authenticated %}
                     <li><a href="{% url 'articles:article-create' %}">Create</a></li>
                     <li><a href="{% url 'users:logout' %}">Logout</a></li>
