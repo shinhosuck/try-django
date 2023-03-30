@@ -21,62 +21,50 @@ def recipe_detail_view(request, id):
 
 
 def recipe_create_view(request):
-    # IngredientFormSet = modelformset_factory(RecipeIngredient, form=IngredientForm, extra=0)
-    # ingredient_forms = IngredientFormSet(request.POST or None, queryset=None)
-    # ingredient_form = IngredientForm(request.POST or None)
     recipe_form = RecipeForm(request.POST or None)
-    ingredient_form = IngredientForm(request.POST or None)
-
-    context = {
-            "recipe_form": recipe_form,
-             "ingredient_form": ingredient_form,
-        }
-
-    if recipe_form.is_valid() and ingredient_form.is_valid():
-            
+    # ingredient_form = IngredientForm(request.POST or None)
+    #  if ingredient_form.is_valid()
+    if recipe_form.is_valid():
         new_recipe = recipe_form.save(commit=False)
-        new_ingredient = ingredient_form.save(commit=False)
+        # new_ingredient = ingredient_form.save(commit=False)
 
         new_recipe.user = request.user
-        new_ingredient.recipe = new_recipe
+        # new_ingredient.recipe = new_recipe
 
         new_recipe.save()
-        new_ingredient.save()
-        
-        recipe = get_object_or_404(Recipe, id=new_recipe.id)
-        ingredients = recipe.recipeingredient_set.all()
+        # new_ingredient.save()
 
-        IngredientFormSet = modelformset_factory(RecipeIngredient, form=IngredientForm, extra=10)
-        ingredient_forms = IngredientFormSet(request.POST or None, queryset=ingredients)
-        context["ingredient_forms"] = ingredient_forms
-
-        if ingredient_forms.is_valid(): 
-            new_ingredient = ingredient_forms.save(commit=False)
-            new_ingredient.recipe = new_recipe
-        # return redirect("recipes:detail", new_recipe.id)
-    print(ingredient_forms)
-    return render(request, "recipes/create.html", context)
+    context = {
+        "recipe_form": recipe_form,
+        # "ingredient_form": ingredient_form,
+    }
+    return render(request, "recipes/create_update.html", context)
 
 
 def recipe_update_view(request, id=None):
     recipe = get_object_or_404(Recipe, id=id)
     ingredients = recipe.recipeingredient_set.all()
+
     IngredientFormSet = modelformset_factory(RecipeIngredient, 
                         form=IngredientForm, extra=0)
+    
     ingredient_forms = IngredientFormSet(request.POST or None, queryset=ingredients)
     recipe_form = RecipeForm(request.POST or None, instance=recipe)
+
     context = {
             "recipe_form": recipe_form,
             "ingredient_forms": ingredient_forms,
-            "recipe": None
         }
+
     if recipe_form.is_valid() and ingredient_forms.is_valid():
-        recipe_form.save()
+        recipe = recipe_form.save()
         for form in ingredient_forms:
-            form.save()
+            ingredient = form.save(commit=False)
+            ingredient.recipe = recipe
+            ingredient.save()
         context["recipe"] = recipe
         # return redirect("recipes:update", id=id)
-    return render(request, "recipes/update.html", context)
+    return render(request, "recipes/create_update.html", context)
 
 
 

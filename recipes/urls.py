@@ -11,7 +11,7 @@ app_name = "recipes"
 
 urlpatterns = [
     path("list", recipe_list_view, name="list"),
-    path("detail/<int:id>", recipe_detail_view, name="detail"),
-    path("update/<int:id>", recipe_update_view, name="update"),
+    path("<int:id>/detail", recipe_detail_view, name="detail"),
+    path("<int:id>/update", recipe_update_view, name="update"),
     path("create", recipe_create_view, name="create")
 ]

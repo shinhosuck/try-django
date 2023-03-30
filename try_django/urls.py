@@ -21,5 +21,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path("", include("articles.urls", namespace="articles")),
     path("user/", include("users.urls", namespace="users")),
-    path("recipe/", include("recipes.urls", namespace="recipes"))
+    path("my/recipe/", include("recipes.urls", namespace="recipes"))
 ]

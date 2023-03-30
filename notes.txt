@@ -1,4 +1,4 @@
-next video: 59
+next video: 64-65
 
 FORM VALIDATION:
 video: 27
@@ -140,3 +140,43 @@ Form = modelformset_factory(model, form=form, extra=0)
 
 FROM EDITING:
 
+In recipes/forms.py:
+class RecipeForm(forms.ModelForm):
+    required_css_class = "required-field"
+    error_css_class = "error-field"
+    # title = forms.CharField(widget=forms.TextInput(attrs={"class": "title-field", "id": "new-title"}))
+    # description = forms.CharField(widget=forms.Textarea(attrs={"class": "description-field"}))
+    # directions = forms.CharField(widget=forms.Textarea(attrs={"class": "directions-field"}))
+    
+    class Meta:
+        model = Recipe
+        fields = ["title", "description", "directions"]
+
+    # or use init method
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields["title"].widget.attrs.update({"class": "new-title-field", "placeholder": "New title"})
+        self.fields["description"].widget.attrs.update({"class": "new-description-field", "rows": "5"})
+        # super().save(*args, **kwargs)
+
+
+In recipes/create_update.html:
+
+-{{ ingredient_forms.management_form }}
+
+    <form action="" method="POST">
+        {% csrf_token %}
+        
+        {% for field in form1 %} #when for loop a form, labels disapears.
+            <div class="{% if field.field.required %}required-field{% endif %}">
+                {% if field.erros %}
+                    <p>{{ field.errors }}</p>
+                {% endif %}
+                {% if field.help_text %}
+                    <p>{{ field.help_text|safe }}</p>
+                {% endif %}
+                {{ field.label_tag }} #bring back label tag
+                {{ field }}
+            </div>
+        {% endfor %}
+    </form>

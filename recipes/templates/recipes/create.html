@@ -10,12 +10,13 @@
 
 <style>
     .article-form-container {
-        position: absolute;
+        /* position: absolute;
         top: 50%;
         left: 50%;
-        transform: translate(-50%, -50%);
+        transform: translate(-50%, -50%); */
         width: 90%;
-        max-width: 700px;
+        max-width: 600px;
+        margin: 2rem auto;
         border: 1px solid rgb(211, 211, 211);
         border-radius: 10px;
     }
@@ -39,6 +40,7 @@
         border-radius: 10px;
         resize: none;
     }
+    
     .recipe-form,
     .ingredient-form {
         display: flex;
@@ -73,13 +75,25 @@
         border: 1px solid rgb(166, 166, 190);
     }
     .required > * {
-        /* padding: 1rem; */
         border: none;
         resize: none;
         width: 100%;
     }
     .required > *:focus {
         outline: none
+    }
+    .ingredient-form1 {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+    .ingredient-form1 > input {
+        border: 1px solid gray;
+        border-radius: 10px;
+        padding: 1rem;
+    }
+    .ingredient-form1 > input:focus {
+        outline: none;
     }
 </style>
 <div class="article-form-container">
@@ -96,21 +110,13 @@
                     </div>
                 {% endfor %}
                 {% if ingredient_form %}
-                    <div>
+                    <div class="ingredient-form1">
+                        <h4>Add ingredient</h4>
                         {{ ingredient_form }}
                     </div>
                 {% endif %}
             </div>
-            <div class="ingredient-form">
-                <h3>Ingredient</h3>
-                {% if ingredient_forms  %}
-                    <div>{{ ingredient_forms }}</div>
-                {% endif %}
-                <div class="ingredient-form2">
-
-                </div>
-            </div>
-            <div><h4>Load more form</h4></div>
+            <div><a href="{% url 'recipes:create' %}">Add more ingredient</a></div>
             <div class="form-button">
                 <input type="submit" value="Submit">
                 <a href="{% url 'articles:home' %}">Cancel</a>

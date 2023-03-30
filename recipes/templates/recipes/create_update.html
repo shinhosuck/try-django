@@ -10,12 +10,13 @@
 
 <style>
     .article-form-container {
-        position: absolute;
+        /* position: absolute;
         top: 50%;
         left: 50%;
-        transform: translate(-50%, -50%);
+        transform: translate(-50%, -50%); */
         width: 90%;
-        max-width: 700px;
+        max-width: 600px;
+        margin: 2rem auto;
         border: 1px solid rgb(211, 211, 211);
         border-radius: 10px;
     }
@@ -81,53 +82,89 @@
     .required > *:focus {
         outline: none
     }
+    .hidden {
+        display: none;
+    }
 </style>
 <div class="article-form-container">
-    {% if not recipe %}
         <h2>Recipe Form</h2>
         <form class="recipe-forms" action="" method="POST">
             {% csrf_token %}
+
             <div class="recipe-form">
                 <h3>Recipe</h3>
                 {% for field in recipe_form %}
+                    {% if field.help_text %}
+                        <p>{{ field.help_text|safe}}</p>
+                    {% endif %}
+                    {% if field.errors %}
+                        <p>{{ field.errors }}</p>
+                    {% endif %}
                     {{ field.label_tag }}
                     <div {% if field.field.required %}class="required"{% endif %}>
                        {{ field }}
                     </div>
                 {% endfor %}
-                {% comment %}
-                    {{ recipe_form }}
-                {% endcomment %}
             </div>
-            <div class="ingredient-form">
-                <h3>Ingredient</h3>
-                {% if ingredient_forms %}
+
+            {% if ingredient_forms %}
+                <h3>Ingredients</h3>
+                <div id="ingredient-form-list">
+                    {{ ingredient_forms.management_form }}
                     {% for form in ingredient_forms %}
-                        <div>{{ form }}</div>
+                        <h4>Ingredient {{ forloop.counter}}</h4>
+                        <div class="ingredient-form">
+                            {{ form }}
+                        </div>
                     {% endfor%}
-                    
-                {% endif %}
-            </div>
-            <div><h4>Load more form</h4></div>
+                </div>
+                <div id="empty-form" class="hidden">
+                    {{ ingredient_forms.empty_form }}
+                </div>
+            {% endif %}
+            <button id="add-more" type="button">Add more</button>
+
             <div class="form-button">
                 <input type="submit" value="Submit">
                 <a href="{% url 'articles:home' %}">Cancel</a>
             </div>
+
         </form>
-    {% else %}
-    <a href="{% url 'recipes:detail' recipe.id %}">
-        <p>Article: {{ recipe.id }}</p>
-        <h3>{{ recipe.title }}<small>recipe has been updated!</small></h3>
-    </a>
+
+    {% if recipe %}
+        <a href="{% url 'recipes:detail' recipe.id %}">
+            <p>Article: {{ recipe.id }}</p>
+            <h3>{{ recipe.title }}<small>recipe has been updated!</small></h3>
+        </a>
     {% endif %}
+
 </div>
 <script>
-    const required = [...document.querySelectorAll(".required > *")];
-    required.forEach(function(item){
-        placeHolder = item.name
-        item.placeholder=placeHolder
-        item.style.letterSpacing = "0.06rem"
-        item.style.textTransform = "capitalize"
-    })
+    const addMoreBtn = document.querySelector("#add-more")
+    const totalNewForms = document.querySelector("#id_form-TOTAL_FORMS")
+   
+   function loadNewForm(event) {
+        event.preventDefault()
+
+        const copyEmptyFormEl = document.querySelector("#empty-form").cloneNode(true)
+        const formAppendTarget = document.querySelector("#ingredient-form-list")
+        const currentIngredientForms = document.querySelectorAll(".ingredient-form")
+        const currentFormCount = currentIngredientForms.length
+
+        copyEmptyFormEl.setAttribute("class", "ingredient-form")
+        copyEmptyFormEl.setAttribute("id", `form-${currentFormCount}`)
+
+        const regex = new RegExp("__prefix__", "g")
+        copyEmptyFormEl.innerHTML = copyEmptyFormEl.innerHTML.replace(regex, currentFormCount )
+        totalNewForms.setAttribute("value", currentFormCount + 1)
+        formAppendTarget.append(copyEmptyFormEl)
+        
+   }
+
+
+
+    addMoreBtn.addEventListener("click", loadNewForm)
+
+
 </script>
 {% endblock content %}
